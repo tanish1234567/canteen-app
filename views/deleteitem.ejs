@@ -1,0 +1,36 @@
+<%- include('login/partials/header') %>
+    <nav>
+        <ul class="ul">
+            <li class="merchant-item-list"><a class="merchant-alist" href="/ordersrecieved"> Orders Recieved</a></li>
+            <li class="merchant-item-list"><a class = "merchant-alist"href="/merchant">Add Item</a></li>
+            <!-- <li class="merchant-item-list"><a class="merchant-alist" href="/deleteitem"> Delete Item</a></li> -->
+            <li class="merchant-item-list"><a class="merchant-alist" href=""> Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid" id="deleteitemform">
+        <%if(msg !==null){%>
+            <div class="alert alert-primary" id="alertofdelete" role="alert">
+                <strong>
+                    <%= msg %>
+                </strong>
+            </div>
+            <%}%>
+                <form action="/deleteitem" method="post">
+                    <div class="mb-3">
+                        <label for="itemnametobeadded" class="form-label">Name of item</label>
+                        <input type="text" class="form-control" name="nameofitem" id="itemnametobeadded"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Delete</button>
+                </form>
+    </div>
+
+    <script>
+        let alertofmerchant = document.getElementById("alertofdelete");
+        function fun() {
+            alertofmerchant.style.display = "none";
+        }
+        setTimeout(fun, 2500);
+    </script>
+    <%- include('login/partials/footer') %>

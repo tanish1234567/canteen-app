@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<title>Pay Here</title>
+<body>
+    <h3>Welcome to Payment Gateway</h3>
+    <form action="payment" method="POST">
+        <input type="text" name = "name" style="display: none;"value = "<%=personname%>"placeholder = "Enter name">
+        <input type="text" name = "amount" style="display: none;" value="<%=amount%>" >
+        <input type="text" name = "order" style="display: none;" value="<%=order%>" >
+       <script
+          src="//checkout.stripe.com/v2/checkout.js"
+          class="stripe-button"
+          data-key="<%= key %>"
+          data-amount="<%=amount%>*10"
+          data-currency="inr"
+          data-name="Payment for food"
+          data-description="Canteen"
+          data-locale="auto" >
+        </script>
+    </form>
+</body>
+</html>

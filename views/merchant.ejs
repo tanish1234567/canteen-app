@@ -1,0 +1,49 @@
+<%- include('login/partials/header') %>
+    <nav>
+        <ul class="ul">
+            <li class="merchant-item-list"><a class="merchant-alist" href="/ordersrecieved"> Orders Recieved</a></li>
+            <!-- <li class="merchant-item-list"><a class = "merchant-alist"href=""> Add Item</a></li> -->
+            <li class="merchant-item-list"><a class="merchant-alist" href="/deleteitem">Delete Item</a></li>
+            <li class="merchant-item-list"><a class="merchant-alist" href="/"> Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid" id="additemform">
+        <%if(msg !==null){%>
+            <div class="alert alert-primary" id="alertofmerchant" role="alert">
+                <strong>
+                    <%= msg %>
+                </strong>
+            </div>
+            <%}%>
+                <form action="/merchant" method="post">
+                    <div class="mb-3">
+                        <label for="itemnametobeadded" class="form-label">Name of item</label>
+                        <input type="text" class="form-control" name="nameofitem" id="itemnametobeadded"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="numberprice" class="form-label">Price</label>
+                        <input type="number" class="form-control" name="priceofitem" id="numberprice"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemimgurl" class="form-label">Add image link</label>
+                        <input type="text" class="form-control" name="imgUrl" id="itemimgurl"
+                            aria-describedby="emailHelp">
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+
+                </form>
+    </div>
+
+    <script>
+        let alertofmerchant = document.getElementById("alertofmerchant");
+        function fun() {
+            alertofmerchant.style.display = "none";
+        }
+        setTimeout(fun, 2500);
+    </script>
+    <%- include('login/partials/footer') %>

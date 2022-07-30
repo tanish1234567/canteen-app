@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Success</h1>
+        <p class="col-md-8 fs-4">We have recieved your payment</p>
+        <h2 class="display-5 fw-bold">Order Summary</h2>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Item-Name</th>
+        <th scope="col">Item-Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% items.forEach((item)=>{ %>
+            <tr>
+              <td><%=item.productName%></td>
+              <td><%=item.productQuantity%></td>
+            </tr>
+        <% })  %>
+    </tbody>
+</table>
+
+<%- include('partials/footer') %>

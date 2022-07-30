@@ -1,0 +1,28 @@
+<%- include('login/partials/header') %>
+    <%- include('navbar') %>
+        <div>
+            <h1 id="canteen-heading">Hello <%= name %>
+            </h1>
+        </div>
+        <div class="item-container">
+            <% items.forEach(function(item){ %>
+
+                <div class="card item-card">
+                    <img src="<%=item.img%>" class="card-img-top"id = "imagesincanteen" alt="eatables">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%=item.name%>
+                        </h5>
+                        <p class="card-text">Price : &#8377;<%=item.price%>
+                        </p>
+                        <div class="btns">
+                            <button class = "bt" onclick="removeFromCart('<%=item.name%>','<%=item.price%>')">-</button>
+                            <button class = "bt" onclick="addToCart('<%=item.name%>','<%=item.price%>')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+        <script src="js/index.js"></script>
+        
+<%- include('login/partials/footer') %>

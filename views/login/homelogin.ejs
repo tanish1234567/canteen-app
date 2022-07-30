@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+  <% if(message) {%>
+      <div class="alert alert-primary" role="alert">
+        <strong><%= message %></strong>
+      </div>
+  <% } %>
+      <div class="jumbotron centered">
+        <div class="container">
+          <i class="fas fa-key fa-6x"></i>
+          <h1 class="display-3">Canteen</h1>
+          <p class="lead">Welcome to the Canteen Application.Please Login or register to continue</p>
+          <hr>
+          <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
+          <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a>
+
+        </div>
+      </div>
+      <script>
+
+      </script>
+      <%- include('partials/footer') %>

@@ -1,0 +1,25 @@
+<%- include('login/partials/header') %>
+
+    <nav>
+        <ul class="ul">
+            <li class="merchant-item-list"><a class="merchant-alist" href="/ordersrecieved"> Orders Recieved</a></li>
+            <li class="merchant-item-list"><a class="merchant-alist" href=""> Add Item</a></li>
+            <li class="merchant-item-list"><a class="merchant-alist" href=""> Delete Item</a></li>
+            <li class="merchant-item-list"><a class="merchant-alist" href=""> Logout</a></li>
+        </ul>
+    </nav>
+
+    <form action="" method="post">
+        <div class="mb-3">
+            <label for="itemnametobeadded" class="form-label">Name of item</label>
+            <input type="text" class="form-control" id="itemnametobeadded" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="numberprice" class="form-label">Price</label>
+            <input type="number" class="form-control" id="numberprice" aria-describedby="emailHelp">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Add</button>
+
+    </form>
+    <%- include('login/partials/footer') %>

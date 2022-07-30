@@ -1,0 +1,32 @@
+<%- include('login/partials/header') %>
+<nav class="navbar">
+    <div>
+        <ul id="nav-list-items">
+            <li><button type="button" id="itembtn" class="btn btn-warning" data-bs-toggle="modal"data-bs-target="#itemModal">Items</button><span id="noofitems"></span></li>
+            <li><a href="/">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Items Selected</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id = "modal-body1">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form action="/checkout" method="post" id = "checkoutform">
+                    <input type="text" id = "inputofcheckoutform" name = "inputofcheckoutform">
+               <button type="submit" id = "checkout-btn"class="btn btn-primary">Checkout</button>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/index.js"></script>
+
+

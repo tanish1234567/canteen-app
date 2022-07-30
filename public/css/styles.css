@@ -1,0 +1,110 @@
+body {
+  background-color: #E8ECEF;
+}
+.centered {
+  padding-top: 90px;
+  text-align: center;
+}
+.navbar{
+  display: flex;
+  background-color: #fff;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+.navbar div{
+  display: flex;
+  flex-direction: row-reverse;
+}
+#nav-list-items{
+  display: flex;
+}
+#nav-list-items li {
+  list-style: none;
+  margin-left: 9px;
+  margin-right: 9px;
+}
+#nav-list-items li a{
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 1.8rem;
+}
+#imagesincanteen{
+  height: 250px;
+}
+#canteen-heading{
+  text-align: center;
+}
+
+.navbarofcanteen{
+  display: flex;
+  flex-direction: row-reverse;
+}
+.btns{
+  display: flex;
+  justify-content: space-between;
+}
+.bt{
+  background-color: black;
+  /* border-radius: 50%; */
+  color: white;
+  font-size: 1.3rem;
+
+  cursor: pointer;
+}
+.item-container{
+  padding: 8px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+.item-card{
+  width: 400px;
+  margin-top: 10px;
+}
+.cartheading{
+  text-align: center;
+}
+
+.ul{
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+}
+.merchant-item-list{
+  list-style: none;
+  /* text-decoration: none; */
+  margin: 10px;
+}
+.merchant-alist{
+  color: white;
+  text-decoration: none;
+  /* cursor: pointer; */
+}
+/* .merchant-item-list a:hover{
+  background-color: wheat; 
+} */
+
+#additemform{
+  width: 800px;
+  height: 70vh;
+}
+#deleteitemform{
+  width: 800px;
+  height: 70vh;
+}
+#checkoutcontainer{
+  width: 80vw;
+  display: block;
+  margin: auto;
+  /* border: 1px solid black; */
+  background-color: antiquewhite;
+}
+#paybillform{
+  display: flex;
+  /* flex-direction: row-reverse; */
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+  flex-direction: column;
+}

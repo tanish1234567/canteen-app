@@ -1,0 +1,34 @@
+<%- include('login/partials/header') %>
+    <nav>
+        <ul class="ul">
+            <li class="merchant-item-list"><a class="merchant-alist" href="/ordersrecieved"> Orders Recieved</a></li>
+            <li class="merchant-item-list"><a class="merchant-alist" href="/merchant">Add Item</a></li>
+            <!-- <li class="merchant-item-list"><a class="merchant-alist" href="/deleteitem"> Delete Item</a></li> -->
+            <li class="merchant-item-list"><a class="merchant-alist" href=""> Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container-fluid">
+        <% arr.forEach((item)=>{ %>
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <%=item.name%> order <%=today%>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                 <%=item.order%>
+                </div>
+              </div>
+            </div>
+        <% }) %>
+    </div>
+    <script>
+        let alertofmerchant = document.getElementById("alertofdelete");
+        function fun() {
+            alertofmerchant.style.display = "none";
+        }
+        setTimeout(fun, 2500);
+    </script>
+    <%- include('login/partials/footer') %>
