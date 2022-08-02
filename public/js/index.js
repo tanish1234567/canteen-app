@@ -75,12 +75,11 @@ function removeFromCart(pdtname, pdtprice) {
 }
 
 let modalBody = document.getElementById("modal-body1");
-let totalamount = 0;
 let itembtn = document.getElementById("itembtn");
 let inputofcheckoutform = document.getElementById("inputofcheckoutform");
 inputofcheckoutform.style.display = "none";
 function showCart() {
-    totalamount = 0;
+    let totalamount = 0;
     let cartnumber = document.getElementById("noofitems");
     let arr = localStorage.getItem("cart");
     const attribute = document.createAttribute('value');
@@ -117,4 +116,4 @@ function showCart() {
         modalBody.innerHTML = table;
     }
 }
-// showCart();
+showCart();

@@ -5,19 +5,27 @@ const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/userdb", { useNewUrlParser: true });
+const Razorpay = require("razorpay");
+const { response } = require("express");
+mongoose.connect("mongodb+srv://tanish:tanish12345@cluster0.kyali.mongodb.net/userdb", { useNewUrlParser: true });
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-// let Publishable_Key = process.env.Publishable_Key;
-// let Secret_Key = process.env.Secret_Key;
-var Publishable_Key = 'pk_test_51LQujwSC4kCw36JJcP3Mjsh1LU5nA7yRdqJXWuoCoj12S25UJtqytfR4kRzPVoLDxsDEfQpMlZfh5IkkppJHfMCx00AV080qXd';
-var Secret_Key = 'sk_test_51LQujwSC4kCw36JJtxfQ3ZBjUs6lDLoRs8PLCLealxv0ffCpARp9H1ugVcA5P3IPSWNNKdcW86rLO1LavtEWnjaz00G3vCk7pG';
+const instance = new Razorpay({
+    key_id:'rzp_test_skJk7a3iATLHzp',
+    key_secret:'1f30Eu4E1sW9eY1fphVzUtQA'
+});
+// // let Publishable_Key = process.env.Publishable_Key;
+// // let Secret_Key = process.env.Secret_Key;
+// var Publishable_Key = 'pk_test_51LQujwSC4kCw36JJcP3Mjsh1LU5nA7yRdqJXWuoCoj12S25UJtqytfR4kRzPVoLDxsDEfQpMlZfh5IkkppJHfMCx00AV080qXd';
+// var Secret_Key = 'sk_test_51LQujwSC4kCw36JJtxfQ3ZBjUs6lDLoRs8PLCLealxv0ffCpARp9H1ugVcA5P3IPSWNNKdcW86rLO1LavtEWnjaz00G3vCk7pG';
 
-const stripe = require('stripe')(Secret_Key);
+// const stripe = require('stripe')(Secret_Key);
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-app.use(bodyParser.json());
+app.use(express.json({
+    type: ['application/json', 'text/plain']
+  }));
 
 const itemSchema = new mongoose.Schema({
     name: String,
@@ -28,11 +36,7 @@ const itemModel = module.exports = new mongoose.model("item", itemSchema);
 
 
 const orderSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    phone: Number,
-    price: Number,
-    order: String
+    data: String,
 });
 const orderModel = new mongoose.model("order", orderSchema);
 
@@ -169,12 +173,20 @@ app.post("/checkout", (req, res) => {
 
 app.post("/payamount", (req, res) => {
     let totalPrice = parseInt(req.body.totalprice)*100;
-    let phone = req.body.phone;
-    let email = req.body.email;
-    let name = req.body.name;
-    let order = req.body.order;
-    console.log(order);
-    res.render("pay",{key: Publishable_Key,amount:totalPrice,order:order,personname:name});
+    let orderrecieved = req.body.order;
+    let options = {
+        amount:totalPrice,
+        currency:"INR"
+    };
+    instance.orders.create(options,function(err,order){
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            res.render("razorpaycheckout",{order_id:order.id,amount:totalPrice,ordersummary:orderrecieved});
+        }
+    })
 });
 
 
@@ -211,6 +223,33 @@ app.post('/payment', function(req, res){
     });
 });
 
+app.get("/success",(req,res)=>{
+    res.render("success");
+})
+
+app.post("/success",(req,res)=>{
+    // let data = req.body;
+    // let obj = data;
+    // let amount = obj.amount;
+    // let order_id = obj.order_id;
+    // let arr = obj.ordersummary;
+    // console.log(amount);
+    // console.log(order_id);
+    // // let a = JSON.parse(arr);
+    // console.log(arr[0].productQuantity);
+    // console.log(arr[0].productName);
+    // console.log(arr[0].productPrice);
+    // // response.json({
+    // //     status:"missionaccomplished",
+    // // });
+    console.log(req.body);
+    let data = JSON.stringify(req.body);
+    let ob = new orderModel({
+        data:data
+    });
+    ob.save();
+    res.end();
+});
 
 app.get("/merchant", (req, res) => {
     res.render("merchant", { msg: null });
@@ -252,12 +291,14 @@ app.post("/deleteitem", (req, res) => {
 
 app.get("/ordersrecieved", (req, res) => {
     let date = new Date();
+    console.log(date);
     orderModel.find({}, (err, array) => {
         if (err) {
             console.log(err);
         }
         else {
-            console.log(array);
+            // console.log(array[0].data);
+
                 res.render("ordersrecieved", { arr:array,today:date});
         }
     })

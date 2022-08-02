@@ -1,28 +1,49 @@
 <%- include('login/partials/header') %>
 
-<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="p-5 mb-4 bg-light rounded-3">
     <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold">Success</h1>
-        <p class="col-md-8 fs-4">We have recieved your payment</p>
-        <h2 class="display-5 fw-bold">Order Summary</h2>
+      <h1 class="display-5 fw-bold">Success</h1>
+      <p class="col-md-8 fs-4">We have recieved your payment</p>
+      <h2 class="display-5 fw-bold">Order Summary</h2>
     </div>
-</div>
+  </div>
 
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Item-Name</th>
-        <th scope="col">Item-Quantity</th>
-      </tr>
-    </thead>
-    <tbody>
-        <% items.forEach((item)=>{ %>
-            <tr>
-              <td><%=item.productName%></td>
-              <td><%=item.productQuantity%></td>
-            </tr>
-        <% })  %>
-    </tbody>
-</table>
-
+  <div class = "container-fluid" id="tablediv"></div>
+<script>
+      // window.onload = () => {
+        let info = localStorage.getItem("finalorder");
+        let obj = JSON.parse(info);
+        console.log(obj.ordersummary);
+        let divbody = document.getElementById("tablediv");
+        let divitem = `<div>Amount Paid : ${obj.amount / 100}</div>
+          <div>Order Id : ${obj.order_id}</div>
+          <div>Order Summary : ${obj.ordersummary}</div>
+        `;
+        // divitem += `<table><thead>
+          // <tr>
+          //       <th>Item-Name</th>
+          //       <th>Item-quantity</th></tr>
+          //   </thead>
+          // `;
+          // for(let i=0;i<arr.length;i++){
+          //   divitem+=`
+          //   <tr>
+          //     <td>${arr[i].productName}</td>  
+          //     <td>${arr[i].productQuantity}</td>  
+          //   </tr>
+          //   `;
+          // }
+          // divitem+=`</table>`
+          divbody.innerHTML = divitem;
+          // sendData();
+          fetch('/success', {method: "POST",
+          header:{'content-type':"application/x-www-form-urlencoded"},
+          body: info});
+        // }
+        // setTimeout(() => {
+          
+        //   localStorage.clear();
+        // }, 10000);
+      
+</script>
 <%- include('login/partials/footer') %>

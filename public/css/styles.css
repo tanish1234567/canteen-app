@@ -1,8 +1,11 @@
 body {
   background-color: #E8ECEF;
 }
+#canteenlogo{
+  height: 50vh;
+}
 .centered {
-  padding-top: 90px;
+  padding-top: 20px;
   text-align: center;
 }
 .navbar{

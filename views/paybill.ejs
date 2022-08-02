@@ -39,6 +39,7 @@
             <th scope="col">Item-Name</th>
             <th scope="col">Item-Quantity</th>
             <th scope="col">Item-price</th>
+            <th scope="col">Total-price</th>
           </tr>
         </thead>
         <tbody>
@@ -47,6 +48,7 @@
                   <td><%=item.productName%></td>
                   <td><%=item.productQuantity%></td>
                   <td><%=item.productPrice%></td>
+                  <td><%=item.productPrice*item.productQuantity%></td>
                 </tr>
             <% })  %>
         </tbody>
@@ -55,10 +57,10 @@
       </table>
       <form action="/payamount" method="post" id = "paybillform">
         <input type="text"name = "totalprice" id = "paybillforminput"value = "<%=totalamount%>"style = "display:none;">
-        <input type="number"name = "phone" id = "phoneforminput" placeholder="Enter phone number"><br>
+        <!-- <input type="number"name = "phone" id = "phoneforminput" placeholder="Enter phone number"><br>
         <input type="email"name = "email" placeholder="Enter email"><br>
-        <input type="text"name = "name" placeholder="Enter name"><br>
-        <input type="text"name = "order" value = "<%=order%>"style="display:none;" id = "orderid">
+        <input type="text"name = "name" placeholder="Enter name"><br> -->
+        <input type="text"name = "order" value = "<%=items%>"style="display:none;" id = "orderid">
         <button type="submit" onclick = "localStorage.clear();" class="btn btn-success my-2">Pay-Bill</button>
       </form>
     </div>

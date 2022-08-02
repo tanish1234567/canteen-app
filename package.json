@@ -18,6 +18,6 @@
     "nodemon": "^2.0.19",
     "paytmchecksum": "^1.5.0",
     "querystring": "^0.2.1",
-    "stripe": "^9.16.0"
+    "razorpay": "^2.8.2"
   }
 }
