@@ -2,36 +2,10 @@
 <nav class="navbar">
     <div>
         <ul id="nav-list-items">
-            <!-- <li><button type="button" id="itembtn" class="btn btn-warning" data-bs-toggle="modal"data-bs-target="#itemModal">Items</button><span id="noofitems"></span></li> -->
-            <li><a href="/">Logout</a></li>
+          <li><a href="/">Logout</a></li>
         </ul>
     </div>
 </nav>
-<div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Items Selected</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id = "modal-body1">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <form action="/checkout" method="post" id = "checkoutform">
-                    <input type="text" id = "inputofcheckoutform" name = "inputofcheckoutform">
-               <button type="submit" id = "checkout-btn"class="btn btn-primary">Checkout</button>
-            </form>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="js/index.js"></script>
-
-
-
-    
     <div class="conatiner-fluid" id ="checkoutcontainer">
     <table class="table">
         <thead>
@@ -53,15 +27,11 @@
             <% })  %>
         </tbody>
         <tr><td colspan = '4' class = "text-right font-weight-bold">Total Price :<%=totalamount%></td></tr>`
-        
       </table>
       <form action="/payamount" method="post" id = "paybillform">
         <input type="text"name = "totalprice" id = "paybillforminput"value = "<%=totalamount%>"style = "display:none;">
-        <!-- <input type="number"name = "phone" id = "phoneforminput" placeholder="Enter phone number"><br>
-        <input type="email"name = "email" placeholder="Enter email"><br>
-        <input type="text"name = "name" placeholder="Enter name"><br> -->
-        <input type="text"name = "order" value = "<%=items%>"style="display:none;" id = "orderid">
-        <button type="submit" onclick = "localStorage.clear();" class="btn btn-success my-2">Pay-Bill</button>
+        <input type="text"name = "ordersent" value = '<%=order%>' style="display:none;" id = "orderid">
+        <button type="submit"  class="btn btn-success my-2" onclick="localStorage.clear()">Pay-Bill</button>
       </form>
     </div>
 

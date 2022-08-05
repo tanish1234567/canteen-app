@@ -3,26 +3,21 @@
         <ul class="ul">
             <li class="merchant-item-list"><a class="merchant-alist" href="/ordersrecieved"> Orders Recieved</a></li>
             <li class="merchant-item-list"><a class="merchant-alist" href="/merchant">Add Item</a></li>
-            <!-- <li class="merchant-item-list"><a class="merchant-alist" href="/deleteitem"> Delete Item</a></li> -->
+            <li class="merchant-item-list"><a class="merchant-alist" href="/clearorders">Clear Orders</a></li>
             <li class="merchant-item-list"><a class="merchant-alist" href=""> Logout</a></li>
         </ul>
     </nav>
-    <div class="container-fluid">
-        <% for(let i=0;i < arr.length ;i++){ %>
-        <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  Order <%=arr[i]._id%><%=today%>
-                </button>
-              </h2>
-              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                 <%=arr[i].data%>
-                </div>
-              </div>
+    <div class="cont" style="width: 80vw; margin-top: 5px;">
+        <% if(array != null){ %>
+        <%for(let i=0;i< array.length;i++){%>
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%=array[i].date%></h5>
+              <p class="card-text"><%=array[i].data%></p>
             </div>
-        <% } %>
+          </div>
+          <%}%>
+        <%}%>
     </div>
     <script>
         let alertofmerchant = document.getElementById("alertofdelete");

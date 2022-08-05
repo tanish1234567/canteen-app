@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+let orderarr;
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
@@ -8,25 +9,15 @@ const mongoose = require("mongoose");
 const Razorpay = require("razorpay");
 const { response } = require("express");
 mongoose.connect("mongodb+srv://tanish:tanish12345@cluster0.kyali.mongodb.net/userdb", { useNewUrlParser: true });
+// mongoose.connect("mongodb://localhost:27017/userdb", { useNewUrlParser: true });
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 const instance = new Razorpay({
-    key_id:'rzp_test_skJk7a3iATLHzp',
-    key_secret:'1f30Eu4E1sW9eY1fphVzUtQA'
+    key_id: 'rzp_test_skJk7a3iATLHzp',
+    key_secret: '1f30Eu4E1sW9eY1fphVzUtQA'
 });
-// // let Publishable_Key = process.env.Publishable_Key;
-// // let Secret_Key = process.env.Secret_Key;
-// var Publishable_Key = 'pk_test_51LQujwSC4kCw36JJcP3Mjsh1LU5nA7yRdqJXWuoCoj12S25UJtqytfR4kRzPVoLDxsDEfQpMlZfh5IkkppJHfMCx00AV080qXd';
-// var Secret_Key = 'sk_test_51LQujwSC4kCw36JJtxfQ3ZBjUs6lDLoRs8PLCLealxv0ffCpARp9H1ugVcA5P3IPSWNNKdcW86rLO1LavtEWnjaz00G3vCk7pG';
-
-// const stripe = require('stripe')(Secret_Key);
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
-app.use(express.json({
-    type: ['application/json', 'text/plain']
-  }));
-
+app.use(express.json());
 const itemSchema = new mongoose.Schema({
     name: String,
     img: String,
@@ -36,7 +27,9 @@ const itemModel = module.exports = new mongoose.model("item", itemSchema);
 
 
 const orderSchema = new mongoose.Schema({
-    data: String,
+    day: String,
+    date: String,
+    data: String
 });
 const orderModel = new mongoose.model("order", orderSchema);
 
@@ -81,7 +74,7 @@ app.post("/login", (req, res) => {
         else {
 
             bcrypt.compare(password, detailsofuser.password, function (err, result) {
- 
+
                 if (err) {
                     console.log(err);
                 }
@@ -163,92 +156,80 @@ app.post("/checkout", (req, res) => {
     let inputofcheckoutformstring = req.body.inputofcheckoutform;
     let total = 0;
     inputofcheckoutformarr = JSON.parse(inputofcheckoutformstring);
+    orderarr = inputofcheckoutformarr;
 
     for (let i = 0; i < inputofcheckoutformarr.length; i++) {
         total += inputofcheckoutformarr[i].productPrice * inputofcheckoutformarr[i].productQuantity;
     }
-    res.render("paybill", { items: inputofcheckoutformarr, totalamount: total ,order:inputofcheckoutformstring});
+    res.render("paybill", { items: inputofcheckoutformarr, totalamount: total, order: inputofcheckoutformstring });
 });
 
 
 app.post("/payamount", (req, res) => {
-    let totalPrice = parseInt(req.body.totalprice)*100;
-    let orderrecieved = req.body.order;
+    let totalPrice = parseInt(req.body.totalprice) * 100;
     let options = {
-        amount:totalPrice,
-        currency:"INR"
+        amount: totalPrice,
+        currency: "INR"
     };
-    instance.orders.create(options,function(err,order){
-        if(err)
-        {
+    instance.orders.create(options, function (err, order) {
+        if (err) {
             console.log(err);
         }
-        else{
-            res.render("razorpaycheckout",{order_id:order.id,amount:totalPrice,ordersummary:orderrecieved});
+        else {
+            res.render("razorpaycheckout", { order_id: order.id, amount: totalPrice, arr: orderarr });
         }
     })
 });
 
 
-app.post('/payment', function(req, res){
+app.post('/payment', function (req, res) {
 
     stripe.customers.create({
         email: req.body.stripeEmail,
         source: req.body.stripeToken,
         name: req.body.name,
-        phone:req.body.phone,
-        order:req.body.order
+        phone: req.body.phone,
+        order: req.body.order
     })
-    .then((customer) => {
- 
-        return stripe.charges.create({
-            amount: req.body.amount,
-            description: 'Canteen food',
-            currency: 'INR',
-            customer: customer.id
-        });
-    })
-    .then((charge) => {
-        let object2 = new orderModel({
-            name:req.body.name,
-            email: req.body.stripeEmail,
-            price: req.body.amount,
-            order: JSON.stringify(req.body.order)
+        .then((customer) => {
+
+            return stripe.charges.create({
+                amount: req.body.amount,
+                description: 'Canteen food',
+                currency: 'INR',
+                customer: customer.id
+            });
         })
-        object2.save();
-        res.render("success",{items:order});// If no error occurs
-    })
-    .catch((err) => {
-        res.render("error");// If some error occurs
-    });
+        .then((charge) => {
+            let object2 = new orderModel({
+                name: req.body.name,
+                email: req.body.stripeEmail,
+                price: req.body.amount,
+                order: JSON.stringify(req.body.order)
+            })
+            object2.save();
+            res.render("success", { items: order });// If no error occurs
+        })
+        .catch((err) => {
+            res.render("error");// If some error occurs
+        });
 });
 
-app.get("/success",(req,res)=>{
-    res.render("success");
+app.get("/success", (req, res) => {
+    let date = new Date();
+    let day = date.getDay();
+    let object = new orderModel({
+        day: day,
+        date: date,
+        data: JSON.stringify(orderarr)
+    });
+    console.log("success called");
+    object.save();
+    res.render("success", { arr: orderarr });
 })
 
-app.post("/success",(req,res)=>{
-    // let data = req.body;
-    // let obj = data;
-    // let amount = obj.amount;
-    // let order_id = obj.order_id;
-    // let arr = obj.ordersummary;
-    // console.log(amount);
-    // console.log(order_id);
-    // // let a = JSON.parse(arr);
-    // console.log(arr[0].productQuantity);
-    // console.log(arr[0].productName);
-    // console.log(arr[0].productPrice);
-    // // response.json({
-    // //     status:"missionaccomplished",
-    // // });
-    console.log(req.body);
-    let data = JSON.stringify(req.body);
-    let ob = new orderModel({
-        data:data
-    });
-    ob.save();
-    res.end();
+app.post("/success", (req, res) => {
+
 });
 
 app.get("/merchant", (req, res) => {
@@ -283,25 +264,42 @@ app.post("/deleteitem", (req, res) => {
             console.log(err);
         }
         else {
-            res.render("deleteitem",{ msg: "item deleted successfully" });
+            res.render("deleteitem", { msg: "item deleted successfully" });
         }
     })
 });
 
+app.get("/clearorders",(req,res)=>{
+    mongoose.connection.db.dropCollection('orders', function(err, result) {
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            console.log("done");
+        }
+    });
+    res.render("ordersrecieved",{array:null});
+});
 
 app.get("/ordersrecieved", (req, res) => {
-    let date = new Date();
-    console.log(date);
+    let today = new Date().getDate();
     orderModel.find({}, (err, array) => {
         if (err) {
             console.log(err);
         }
         else {
-            // console.log(array[0].data);
-
-                res.render("ordersrecieved", { arr:array,today:date});
+            console.log(array);
         }
-    })
+    });    
+    orderModel.find({}, (err, array) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.render("ordersrecieved", { array: array });
+        }
+    });
 });
 
 

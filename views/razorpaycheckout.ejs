@@ -26,10 +26,10 @@
 
             <div class="container p-0 mt-5">
                 <div class="card px-4">
-                    <input type="hidden" name="order_id" value="<%= order_id %>">
-                    <input type="hidden" name="ordersummary" value="<%= ordersummary %>">
+                    
                     <p class="h8 py-3">Payment Details</p>
-                    <form id="parent-form">
+                    <form id="parent-form" >
+                        <input type="hidden" name="order_id" value="<%= order_id %>">
                         <div class="col-12">
                             <div class="row gx-3">
                                 <div class="d-flex flex-column">
@@ -64,19 +64,14 @@
                 </div>
             </div>
         </div>
-
         <script>
-            // shortcut function for document.getElementById
             var getEl = document.getElementById.bind(document);
             var formatter = Razorpay.setFormatter(getEl("parent-form"));
             var cvvField = getEl('card_cvv');
 
             formatter.add('card', getEl('card_number'))
                 .on('network', function (o) {
-
-                    var type = this.type; // e.g. 'visa'
-
-                    // set length of cvv element based on amex card
+                    var type = this.type;
                     var cvvlen = type === 'amex' ? 4 : 3;
                     cvvField.maxLength = cvvlen;
                     cvvField.pattern = '^[0-9]{' + cvvlen + '}$';
@@ -86,8 +81,6 @@
                 .on('change', function () {
                     var isValid = this.isValid();
                     getEl('card_valid').innerHTML = isValid ? 'valid' : 'invalid';
-
-                    // automatically focus next field if card number is valid and filled
                     if (isValid && this.el.value.length === this.caretPosition) {
                         getEl('card_expiry').focus();
                     }
@@ -97,47 +90,20 @@
                 .on('change', function () {
                     var isValid = this.isValid();
                     getEl('expiry_valid').innerHTML = isValid ? 'valid' : 'invalid';
-
-                    // automatically focus next field if card number is valid and filled
                     if (isValid && this.el.value.length === this.caretPosition) {
                         getEl('card_cvv').focus();
                     }
                 })
-
-            // method specific fields
-
-            // function postData()
-            // {
-            //     url = '/success';
-            //     data = {
-            //         amount:'<%=amount%>',
-            //         order_id: '<%= order_id %>',
-            //         ordersummary:'<%=ordersummary%>',
-            //     };
-            //     strdata = JSON.stringify(data);
-            //     params = {
-            //         method : "POST",
-            //         body:strdata
-            //     };
-            //     fetch(url,params).then((response)=>{
-            //         return response.json();
-            //     }).then((data)=>{
-            //         console.log(data);
-            //     });
-            
-            // }
-
             function pay() {
-                // has to be placed within user initiated context, such as click, in order for popup to open.
                 var data = {
-                    amount: '<%= amount %>', // in currency subunits. Here 1000 = 1000 paise, which equals to ₹10
-                    currency: "INR",// Default is INR. We support more than 90 currencies.
-                    email: 'gaurav.kumar@example.com',
+                    amount: '<%= amount %>', 
+                    currency: "INR",
+                    email: 'canteen@canteen.com',
                     contact: '0000000000',
                     notes: {
                         address: 'Canteen UIET PU CHD',
                     },
-                    order_id: '<%= order_id %>',// Replace with Order ID generated in Step 4
+                    order_id: '<%= order_id %>',
                     method: 'card',
                     card: {
                         number: $("#card_number").val(),
@@ -147,43 +113,17 @@
                         cvv: parseInt($('#card_cvv').val())
                     }
                 };
-
-                // console.log(data);
                 razorpay.createPayment(data);
 
                 razorpay.on('payment.success', function (resp) {
-                    // postData();
                     data = {
-                    amount:'<%=amount%>',
-                    order_id: '<%= order_id %>',
-                    ordersummary:'<%=ordersummary%>',
+                        amount:'<%=amount%>',
+                        order_id: '<%= order_id %>',
                     };
                     strdata = JSON.stringify(data);
-                    localStorage.setItem("fo",'<%=ordersummary%>');
                     localStorage.setItem("finalorder",strdata);
-                    // swal("Success!", "Your payment is sucess", "success");
-
-                    // let array = [];
-                    // array.push('<%= amount %>');
-                    // array.push('<%= order_id %>');
-                    // array.push('<%=ordersummary%>');
-                    // let str = JSON.stringify(arr);
-                    // fetch('https://localhost:3000/success',{method:'POST',body:str})
-                    // .then(results=>results.json())
-                    // .then(console.log());
-                    // $.ajax({
-                    //     url: '/success',
-                    //     type: 'POST',
-                    //     data: {
-                    //         razorpay_payment_id: resp.razorpay_payment_id,
-                    //         razorpay_order_id: resp.razorpay_order_id,
-                    //         razorpay_signature: resp.razorpay_signature,
-                    //     }
-                    //     // window.location = data
-                    // });
                     window.location.replace('/success');   
-                }); // will pass payment ID, order ID, and Razorpay signature to success handler.
-
+                });
                 razorpay.on('payment.error', function (resp) { 
                     swal("Error", "Oops something went wrong try contacting to admin", "error"); }); // will pass error object to error handler
             };

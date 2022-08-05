@@ -112,3 +112,8 @@ body {
   margin-bottom: 5px;
   flex-direction: column;
 }
+
+#ordersandsummary{
+  display: block;
+  margin: auto;
+}
